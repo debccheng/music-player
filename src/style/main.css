@@ -1,6 +1,9 @@
 :root {
   --baseFontSize: 16px;
   --bg: #303940;
+
+  --screenImage: none;
+  --screenGlow: none;
 }
 
 html, body {
@@ -29,8 +32,10 @@ html, body {
   margin: 1em;
   /* border: 1px solid white; */
   height: auto;
-  width: 37.5em;
+  width: 100%;
+  max-width: 50em;
   overflow: hidden;
+  filter: brightness(50%);
 }
 
 svg {
@@ -69,11 +74,11 @@ svg {
   
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: repeating-conic-gradient(#0000 0.000045%, #000d 0.0005%), url("https://www.wallpapertip.com/wmimgs/96-969011_aesthetic-lo-fi-wallpaper-iphone.jpg");
+  background-image: repeating-conic-gradient(#0000 0.000045%, #000d 0.0005%), var(--screenImage);
   background-blend-mode: soft-light;
 
-  box-shadow: 0 0 5.5em 1.5em rgba(255, 255, 255, 0.66);
-  animation: glow ease-in 3s infinite, fuzzy-screen ease-in-out 0.5s infinite;
+  box-shadow: var(--screenGlow);
+  animation: fuzzy-screen ease-in-out 0.5s infinite;
 }
 
 #progress-bar {
@@ -85,6 +90,7 @@ svg {
   padding: 0.5%;
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.8);
+  display: none;
 }
 
 #progress-bar::before {
@@ -117,10 +123,10 @@ span {
 
 @keyframes fuzzy-screen {
   33% {
-    background-image: repeating-conic-gradient(#0000 0.000054%, #000d 0.0004%), url("https://www.wallpapertip.com/wmimgs/96-969011_aesthetic-lo-fi-wallpaper-iphone.jpg");
+    background-image: repeating-conic-gradient(#0000 0.000054%, #000d 0.0004%), var(--screenImage);
   }
   66% {
-    background-image: repeating-conic-gradient(#0000 0.00005%, #000d 0.00054%), url("https://www.wallpapertip.com/wmimgs/96-969011_aesthetic-lo-fi-wallpaper-iphone.jpg");
+    background-image: repeating-conic-gradient(#0000 0.00005%, #000d 0.00054%), var(--screenImage);
   }
 }
 /* #endregion */

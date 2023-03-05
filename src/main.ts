@@ -1,3 +1,7 @@
-import { fetchTracks } from "./api";
+import { setTrack } from "./api";
 
-fetchTracks();
+const playButton = document.getElementById("play-button");
+playButton?.addEventListener("click", () => {
+  setTrack();
+});
+
