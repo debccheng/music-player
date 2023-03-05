@@ -1,3 +1,3 @@
-"use strict";
+import { fetchTracks } from "./api";
 
-console.log("hello world");
+fetchTracks();
