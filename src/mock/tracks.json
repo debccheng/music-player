@@ -5,24 +5,24 @@
       "title": "Lofi Lofi Dem Bucks",
       "artist": "BrentinDavis",
       "duration": 251,
-      "cover": "../assets/images/01.jpg",
-      "src": "./assets/audio/lofi-lofi-dem-bucks.mp3"
+      "cover": "src/assets/images/01.jpg",
+      "src": "src/assets/audio/lofi-lofi-dem-bucks.mp3"
     },
     {
       "id": "011254",
       "title": "Jazzy Abstract Beat",
       "artist": "Coma-media",
       "duration": 85,
-      "cover": "./assets/images/02.jpg",
-      "src": "./assets/audio/jazzy-abstract-beat.mp3"
+      "cover": "src/assets/images/02.jpg",
+      "src": "src/assets/audio/jazzy-abstract-beat.mp3"
     },
     {
       "id": "112369",
       "title": "Lofi Summer Background",
       "artist": "Vladislav Kurnikov",
       "duration": 133,
-      "cover": "./assets/images/03.jpg",
-      "src": "../assets/audio/lofi-summer-background.mp3"
+      "cover": "src/assets/images/03.jpg",
+      "src": "src/assets/audio/lofi-summer-background.mp3"
     }
   ]
 }
