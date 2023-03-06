@@ -28,6 +28,7 @@ html, body {
 }
 
 .svg-container {
+  position: relative;
   box-sizing: border-box;
   margin: 1em;
   /* border: 1px solid white; */
@@ -74,11 +75,12 @@ svg {
   
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   background-image: repeating-conic-gradient(#0000 0.000045%, #000d 0.0005%), var(--screenImage);
   background-blend-mode: soft-light;
 
   box-shadow: var(--screenGlow);
-  animation: fuzzy-screen ease-in-out 0.5s infinite;
+  animation: 0.5s ease-in-out infinite fuzzy-screen;
 }
 
 #progress-bar {
@@ -121,6 +123,14 @@ span {
   }
 }
 
+@-webkit-keyframes fuzzy-screen {
+  33% {
+    background-image: repeating-conic-gradient(#0000 0.000054%, #000d 0.0004%), var(--screenImage);
+  }
+  66% {
+    background-image: repeating-conic-gradient(#0000 0.00005%, #000d 0.00054%), var(--screenImage);
+  }
+}
 @keyframes fuzzy-screen {
   33% {
     background-image: repeating-conic-gradient(#0000 0.000054%, #000d 0.0004%), var(--screenImage);
@@ -129,18 +139,24 @@ span {
     background-image: repeating-conic-gradient(#0000 0.00005%, #000d 0.00054%), var(--screenImage);
   }
 }
+
+@keyframes light-change {
+  0% {
+    filter: brightness(80%);
+  }
+}
+
+@keyframes shadow-change {
+ 0% {
+  opacity: 0.25;
+ }
+}
 /* #endregion */
 
 /* #region: Media query */
 @media (max-width: 480px) {
   html, body {
     font-size: calc(var(--baseFontSize) * 0.5);
-  }
-
-  .wrapper, .svg-container {
-    height: 100%;
-    width: 100%;
-    margin: 0;
   }
 
   #screen {
