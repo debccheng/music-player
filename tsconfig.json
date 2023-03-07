@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./src/",
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "es5",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}

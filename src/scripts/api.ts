@@ -20,7 +20,7 @@ type TrackData = {
 }
 
 type RawData = {
-  tracks: TrackData
+  tracks: TrackData[];
 }
 
 const options: RequestInit = {
