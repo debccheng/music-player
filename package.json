@@ -6,7 +6,8 @@
     "build": "parcel build src/index.html --no-source-maps --public-url .",
     "clear-cache": "rm -rf .cache",
     "clean": "rm -rf dist .cache",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "deploy-gh": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "staticFiles": {
     "staticPath": [
