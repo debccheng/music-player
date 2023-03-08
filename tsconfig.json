@@ -8,7 +8,9 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "isolatedModules": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": ["src/types", "src/global.d.ts"],
+    "lib": ["ESNext", "dom"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/global.d.ts"]
 }
