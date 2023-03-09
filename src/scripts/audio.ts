@@ -1,5 +1,5 @@
 import { fetchTracks } from "./api";
-import { startAnimation } from "./animations";
+import { playAnimation, holdAnimation } from "./animations";
 
 window.__audios = window.__audios|| [];
 
@@ -29,7 +29,7 @@ export const setTrack = async () => {
   const result = await fetchTracks();
    
   const trackData = result.tracks[1];
-  startAnimation(trackData.cover);
+  playAnimation(trackData.cover);
 
   const isAnyAudioPlaying = checkAnyAudioPlaying();
   const paused = getPausedAudio(trackData.id);
@@ -43,11 +43,12 @@ export const setTrack = async () => {
     cleanup();
     const audioElement = new Audio(trackData.src);
     window.__audios.push({ id: trackData.id, audioElement });
-    console.log(window.__audios);
-   audioElement.play();
+    audioElement.play();
    return;
   }
   
   window.__audios[0].audioElement.pause();
+  holdAnimation();
   return;
 };
+
