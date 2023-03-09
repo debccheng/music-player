@@ -9,8 +9,8 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "strict": true,
-    "typeRoots": ["src/types", "src/global.d.ts"],
+    "typeRoots": ["src/types"],
     "lib": ["ESNext", "dom"]
   },
-  "include": ["src/**/*", "src/global.d.ts"]
+  "include": ["src/**/*"]
 }

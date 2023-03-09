@@ -19,3 +19,8 @@ export type TrackData = {
 export type RawData = {
   tracks: TrackData[];
 }
+
+export type AudioData = {
+  id: string;
+  audioElement: HTMLAudioElement;
+}

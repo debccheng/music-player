@@ -10,7 +10,7 @@ const options: RequestInit = {
 
 export const fetchTracks = async () => {
   const res = await fetch("src/mock/tracks.json", options);
-  if (!res.ok) { 
+  if (!res.ok) {
     throw new Error(`An error has occurred: ${res.status}`);
   }
 
