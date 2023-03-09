@@ -60,6 +60,7 @@ export class AudioPlayer {
 
     if (pausedAudio) {
       pausedAudio.audioElement.play();
+      playAnimation(audio.cover);
       return;
     }
 
