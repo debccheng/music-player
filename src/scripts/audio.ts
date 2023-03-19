@@ -1,5 +1,5 @@
 import { fetchTracks } from "./api";
-import { playAnimation, holdAnimation, showWaves } from "./animations";
+import { playAnimation, holdAnimation, visualise } from "./animations";
 import { AudioData, TrackData } from "./types";
 
 export class AudioPlayer {
@@ -33,7 +33,9 @@ export class AudioPlayer {
   };
 
   private static cleanup = () => {
+    if (this.srcNode) this.srcNode.disconnect();
     if (this.audioContext) this.audioContext.close();
+    
     this.audioQueue = this.audioQueue.filter(({ audioElement }) => {
       return audioElement.duration > 0 && !audioElement.paused;
     });
@@ -60,21 +62,19 @@ export class AudioPlayer {
       this.audioContext = new AudioContext();
       this.srcNode = this.audioContext.createMediaElementSource(audioElement);
 
-      showWaves(audioElement, this.audioContext, this.srcNode, false, false);
+      visualise(this.audioContext, this.srcNode);
       playAnimation(audio.cover);
-  
+
       return;
     }
 
     if (pausedAudio) {
       pausedAudio.audioElement.play();
-      showWaves(pausedAudio.audioElement, this.audioContext, this.srcNode, false, true);
       playAnimation(audio.cover);
       return;
     }
 
     playingAudio.audioElement.pause();
-    // showWaves(playingAudio.audioElement, this.audioContext, this.srcNode, true, false);
     holdAnimation();
     return;
   };

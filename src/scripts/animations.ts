@@ -5,7 +5,6 @@ const SCREEN_DIM_GLOW_ANIMATION = "0.5s ease-in-out infinite fuzzy-screen, 0.5s 
 
 export const playAnimation = (trackCover: string) => {
   const screen = document.getElementById("screen");
-  // const progressBar = document.getElementById("progress-bar");
   const shadow = document.getElementById("shadow");
   const svgContainer = document.querySelectorAll<HTMLElement>(".svg-container");
 
@@ -14,11 +13,12 @@ export const playAnimation = (trackCover: string) => {
     screen.style.setProperty("--screenGlow", SCREEN_BOX_SHADOW);
     screen.style.animation = SCREEN_GLOW_ANIMATION;
   }
-  // if (progressBar) progressBar.style.display = "block";
+
   if (shadow) {
     shadow.style.opacity = "0.5";
     shadow.style.animation = "3s steps(2) infinite shadow-change";
   }
+  
   if (svgContainer && svgContainer.length > 0) {
     svgContainer[0].style.filter = "brightness(100%)";
     svgContainer[0].style.animation = "3s steps(2) infinite light-change";
@@ -33,28 +33,68 @@ export const holdAnimation = () => {
   if (screen) {
     screen.style.animation = SCREEN_DIM_GLOW_ANIMATION;
   }
+
   if (shadow) {
     shadow.style.opacity = "0.2";
     shadow.style.animation = "none";
   }
+  
   if (svgContainer && svgContainer.length > 0) {
     svgContainer[0].style.filter = "brightness(80%)";
     svgContainer[0].style.animation = "none";
   }
 };
 
-export const showWaves = (audio: HTMLAudioElement, context: AudioContext, src: MediaElementAudioSourceNode, pause: boolean, resume: boolean) => {
-  console.log(pause);
-  
-  if (pause) {
-    context.suspend();
-    if (src) src.disconnect();
-    return;
-  }
-  if (resume) { 
-    context.resume();
-  }
+type RenderFrameType = {
+  analyser: AnalyserNode;
+  ctx: CanvasRenderingContext2D;
+  bufferLength: number;
+  dataArray: Uint8Array;
+  barWidth: number;
+  height: number;
+  width: number
+}
 
+const renderFrame = ({
+  analyser,
+  ctx,
+  bufferLength,
+  dataArray,
+  barWidth,
+  height,
+  width
+}: RenderFrameType) => {
+  requestAnimationFrame(() => renderFrame({
+    analyser,
+    ctx,
+    bufferLength,
+    dataArray,
+    barWidth,
+    height,
+    width
+  }));
+
+  let x = 0;
+  let barHeight = 0;
+
+  analyser.getByteFrequencyData(dataArray);
+
+  ctx.clearRect(0, 0, width, height);
+
+  for (let i = 0; i < bufferLength; i+=1) {
+    barHeight = dataArray[i];
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.strokeStyle = "white";
+    ctx.fillRect(x - 8, height - barHeight, barWidth - 8, barHeight);
+    ctx.lineWidth = 4;
+    ctx.strokeRect(x - 8, height - barHeight, barWidth - 8, barHeight);
+
+    x += barWidth + 1;
+  }
+};
+
+export const visualise = (context: AudioContext, src: MediaElementAudioSourceNode) => {
   const analyser = context.createAnalyser();
 
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -65,46 +105,24 @@ export const showWaves = (audio: HTMLAudioElement, context: AudioContext, src: M
   src.connect(analyser);
   analyser.connect(context.destination);
 
-  analyser.fftSize = 32;
+  analyser.fftSize = 64;
 
   const bufferLength = analyser.frequencyBinCount;
-
   const dataArray = new Uint8Array(bufferLength);
 
   const WIDTH = canvas.width;
   const HEIGHT = canvas.height;
 
   const barWidth = (WIDTH / bufferLength) * 2.5;
-  let barHeight;
-  let x = 0;
 
-  const renderFrame = () => {
-    if (pause) {
-      return;
-    }
-    requestAnimationFrame(renderFrame);
-    // console.log("renderframe");
-
-    x = 0;
-
-    analyser.getByteFrequencyData(dataArray);
-
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-
-    for (let i = 0; i < bufferLength; i+=1) {
-      barHeight = dataArray[i];
-
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      ctx.strokeStyle = "white";
-      ctx.fillRect(x - 8, HEIGHT - barHeight, barWidth - 8, barHeight);
-      ctx.lineWidth = 4;
-      ctx.strokeRect(x - 8, HEIGHT - barHeight, barWidth - 8, barHeight);
-
-      x += barWidth + 1;
-    }
-  };
-
-  renderFrame();
-  
+  renderFrame({
+    analyser,
+    ctx,
+    bufferLength,
+    dataArray,
+    height: HEIGHT,
+    width: WIDTH,
+    barWidth
+  });
 };
 

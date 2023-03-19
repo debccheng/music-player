@@ -14,7 +14,6 @@ html, body {
 }
 
 .wrapper {
-  /* border: 1px solid white; */
   margin: 3em;
   display: flex;
   flex-direction: row-reverse;
@@ -22,7 +21,6 @@ html, body {
 
 .music-list {
   box-sizing: border-box;
-  /* border: 1px solid white; */
   margin: 1em 1em 1em 0;
   flex: 1;
 }
@@ -31,7 +29,6 @@ html, body {
   position: relative;
   box-sizing: border-box;
   margin: 1em;
-  /* border: 1px solid white; */
   height: auto;
   width: 100%;
   max-width: 50em;
@@ -103,30 +100,6 @@ svg {
   z-index: 2;
 }
 
-#progress-bar {
-  position: absolute;
-  top: 75%;
-  left: 8%;
-  width: 85%;
-  height: 8%;
-  padding: 0.5%;
-  box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: none;
-}
-
-#progress-bar::before {
-  content: '';
-  display: block;
-  height: 100%;
-  background-color: rgba(76,139,245,0.6);
-  width: 33%;
-}
-
-span {
-  animation: blink 1s steps(2) infinite;
-}
-
 /* #region: Animations */
 @keyframes glow {
   25%, 33%, 49%, 51%, 66%, 75%{
@@ -140,12 +113,6 @@ span {
 @keyframes dim-glow {
   50% {
     box-shadow: 0 0 5.5em 1.5em rgba(255, 255, 255, 0.75);
-  }
-}
-
-@keyframes blink {
-  0% {
-    opacity: 0;
   }
 }
 
