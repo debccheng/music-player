@@ -1,59 +1,66 @@
+import { SCREEN_BOX_SHADOW, SCREEN_GLOW_ANIMATION, SCREEN_DIM_GLOW_ANIMATION } from "./constants";
+import type { VisualiserRenderProps } from "./types";
 
-const SCREEN_BOX_SHADOW = "0 0 5.5em 1.5em rgba(255, 255, 255, 0.66)";
-const SCREEN_GLOW_ANIMATION = "0.5s ease-in-out infinite fuzzy-screen, 3s ease-in infinite glow";
-const SCREEN_DIM_GLOW_ANIMATION = "0.5s ease-in-out infinite fuzzy-screen, 0.5s ease-in-out infinite dim-glow";
-
-export const playAnimation = (trackCover: string) => {
+const getElementsForAnimation = (): [HTMLElement, HTMLElement, HTMLElement] | [] => { 
   const screen = document.getElementById("screen");
   const shadow = document.getElementById("shadow");
-  const svgContainer = document.querySelectorAll<HTMLElement>(".svg-container");
+  const svgContainer = document.querySelectorAll<HTMLElement>(".svg-container")?.[0];
 
-  if (screen) {
+  if (!screen || !shadow || !svgContainer) return [];
+  return [screen, shadow, svgContainer];
+};
+
+export const playCSSAnimation = (trackCover: string) => {
+  const elements = getElementsForAnimation();
+
+  if (elements.length === 3) { 
+    const [screen, shadow, svgContainer] = elements;
+
     screen.style.setProperty("--screenImage", `url("${trackCover}")`);
     screen.style.setProperty("--screenGlow", SCREEN_BOX_SHADOW);
     screen.style.animation = SCREEN_GLOW_ANIMATION;
-  }
 
-  if (shadow) {
     shadow.style.opacity = "0.5";
     shadow.style.animation = "3s steps(2) infinite shadow-change";
-  }
-  
-  if (svgContainer && svgContainer.length > 0) {
-    svgContainer[0].style.filter = "brightness(100%)";
-    svgContainer[0].style.animation = "3s steps(2) infinite light-change";
+
+    svgContainer.style.filter = "brightness(100%)";
+    svgContainer.style.animation = "3s steps(2) infinite light-change";
   }
 };
 
-export const holdAnimation = () => {
-  const screen = document.getElementById("screen");
-  const shadow = document.getElementById("shadow");
-  const svgContainer = document.querySelectorAll<HTMLElement>(".svg-container");
+export const changeCSSAnimation = () => {
+  const elements = getElementsForAnimation();
 
-  if (screen) {
+  if (elements.length === 3) { 
+    const [screen, shadow, svgContainer] = elements;
+
     screen.style.animation = SCREEN_DIM_GLOW_ANIMATION;
-  }
 
-  if (shadow) {
     shadow.style.opacity = "0.2";
     shadow.style.animation = "none";
-  }
-  
-  if (svgContainer && svgContainer.length > 0) {
-    svgContainer[0].style.filter = "brightness(80%)";
-    svgContainer[0].style.animation = "none";
+
+    svgContainer.style.filter = "brightness(80%)";
+    svgContainer.style.animation = "none";
   }
 };
 
-type RenderFrameType = {
-  analyser: AnalyserNode;
-  ctx: CanvasRenderingContext2D;
-  bufferLength: number;
-  dataArray: Uint8Array;
-  barWidth: number;
-  height: number;
-  width: number
-}
+export const resetCSSAnimation = () => { 
+  const elements = getElementsForAnimation();
+
+  if (elements.length === 3) { 
+    const [screen, shadow, svgContainer] = elements;
+
+    screen.style.setProperty("--screenImage", "none");
+    screen.style.setProperty("--screenGlow", "none");
+    screen.style.animation = "0.5s ease-in-out infinite fuzzy-screen";
+
+    shadow.style.opacity = "0.1";
+    shadow.style.animation = "none";
+
+    svgContainer.style.filter = "brightness(50%)";
+    svgContainer.style.animation = "none";
+  }
+};
 
 const renderFrame = ({
   analyser,
@@ -63,7 +70,7 @@ const renderFrame = ({
   barWidth,
   height,
   width
-}: RenderFrameType) => {
+}: VisualiserRenderProps) => {
   requestAnimationFrame(() => renderFrame({
     analyser,
     ctx,
@@ -81,14 +88,14 @@ const renderFrame = ({
 
   ctx.clearRect(0, 0, width, height);
 
-  for (let i = 0; i < bufferLength; i+=1) {
+  for (let i = 0; i < bufferLength; i += 1) {
     barHeight = dataArray[i];
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
     ctx.strokeStyle = "white";
-    ctx.fillRect(x - 8, height - barHeight, barWidth - 8, barHeight);
-    ctx.lineWidth = 4;
-    ctx.strokeRect(x - 8, height - barHeight, barWidth - 8, barHeight);
+    ctx.fillRect(x - 4, height - barHeight, barWidth - 4, barHeight);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x - 4, height - barHeight, barWidth - 4, barHeight);
 
     x += barWidth + 1;
   }
@@ -97,9 +104,11 @@ const renderFrame = ({
 export const visualise = (context: AudioContext, src: MediaElementAudioSourceNode) => {
   const analyser = context.createAnalyser();
 
+  const screen = document.getElementById("screen") as HTMLDivElement;
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+
+  canvas.width = screen.clientWidth;
+  canvas.height = screen.clientHeight * 5;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
   src.connect(analyser);
@@ -110,18 +119,18 @@ export const visualise = (context: AudioContext, src: MediaElementAudioSourceNod
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
-  const WIDTH = canvas.width;
-  const HEIGHT = canvas.height;
+  const w = canvas.width;
+  const h = canvas.height;
 
-  const barWidth = (WIDTH / bufferLength) * 2.5;
+  const barWidth = (w / bufferLength) * 3;
 
   renderFrame({
     analyser,
     ctx,
     bufferLength,
     dataArray,
-    height: HEIGHT,
-    width: WIDTH,
+    height: h,
+    width: w,
     barWidth
   });
 };

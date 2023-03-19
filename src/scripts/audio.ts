@@ -1,5 +1,5 @@
 import { fetchTracks } from "./api";
-import { playAnimation, holdAnimation, visualise } from "./animations";
+import { playCSSAnimation, changeCSSAnimation, resetCSSAnimation, visualise } from "./animations";
 import { AudioData, TrackData } from "./types";
 
 export class AudioPlayer {
@@ -35,7 +35,7 @@ export class AudioPlayer {
   private static cleanup = () => {
     if (this.srcNode) this.srcNode.disconnect();
     if (this.audioContext) this.audioContext.close();
-    
+
     this.audioQueue = this.audioQueue.filter(({ audioElement }) => {
       return audioElement.duration > 0 && !audioElement.paused;
     });
@@ -58,24 +58,26 @@ export class AudioPlayer {
       const audioElement = new Audio(audio.src);
       this.audioQueue.push({ id: audio.id, audioElement });
       audioElement.play();
+      audioElement.onended = () => { 
+        resetCSSAnimation();
+      };
 
       this.audioContext = new AudioContext();
       this.srcNode = this.audioContext.createMediaElementSource(audioElement);
 
       visualise(this.audioContext, this.srcNode);
-      playAnimation(audio.cover);
-
+      playCSSAnimation(audio.cover);
       return;
     }
 
     if (pausedAudio) {
       pausedAudio.audioElement.play();
-      playAnimation(audio.cover);
+      playCSSAnimation(audio.cover);
       return;
     }
 
     playingAudio.audioElement.pause();
-    holdAnimation();
+    changeCSSAnimation();
     return;
   };
 }

@@ -31,6 +31,14 @@
       "duration": 133,
       "cover": "src/assets/images/04.jpg",
       "src":"src/assets/audio/dryer-beat-duet-chain.mp3"
-    }
+    },
+    {
+      "id": "000000",
+      "title": "Numb - Snippet",
+      "artist": "Linkin Park",
+      "duration": 18,
+      "cover": "src/assets/images/05.jpeg",
+      "src": "src/assets/audio/numb.mp3"
+  }
   ]
 }

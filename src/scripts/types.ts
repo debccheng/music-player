@@ -24,3 +24,13 @@ export type AudioData = {
   id: string;
   audioElement: HTMLAudioElement;
 }
+
+export type VisualiserRenderProps = {
+  analyser: AnalyserNode;
+  ctx: CanvasRenderingContext2D;
+  bufferLength: number;
+  dataArray: Uint8Array;
+  barWidth: number;
+  height: number;
+  width: number
+}
