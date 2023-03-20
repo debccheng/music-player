@@ -11,24 +11,58 @@ html, body {
   height: 100%;
   margin: 0;
   background-color: var(--bg);
+  color: white;
+  overflow: hidden;
 }
 
 .wrapper {
-  margin: 3em;
-  display: flex;
-  flex-direction: row-reverse;
+  margin-top: 2em;
+  position: relative;
+  max-width: 50em;
 }
 
-.music-list {
+.playlist{
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 17%;
+  width: 0;
+  height: 45%;
+
+  transform: perspective(50em) rotateY(-32deg);
+  perspective-origin: top right;
+  transform-origin: top right;
+
+  background-color: rgba(17, 17, 17, 0.4);
+  border-radius: 1em;
   box-sizing: border-box;
-  margin: 1em 1em 1em 0;
-  flex: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.playlist li {
+  list-style-type: none;
+  box-sizing: border-box;
+  background-color: rgba(17, 17, 17, 0.2);
+  border-radius: 0.5em;
+  padding: 1.5em;
+  font-size: 1.5em;
+  margin: 0.5em;
+  cursor: pointer;
+}
+
+.playlist li:first-child {
+  background-color: rgba(17, 17, 17, 1);
+}
+
+.playlist li:not(:first-child):hover {
+  background-color: rgba(17, 17, 17, 0.4);
 }
 
 .svg-container {
   position: relative;
   box-sizing: border-box;
-  margin: 1em;
   height: auto;
   width: 100%;
   max-width: 50em;
@@ -136,16 +170,33 @@ svg {
   opacity: 0.25;
  }
 }
-/* #endregion */
+
+@keyframes load-playlist {
+  0% {
+      width: 0;
+  }
+  100% {
+      width: 55%;
+  }
+}
+/* #endregion
 
 /* #region: Media query */
+@media (max-width: 800px) {
+  html, body {
+    font-size: calc(var(--baseFontSize) * 0.8);
+  }
+}
+
+@media (max-width: 645px) {
+  html, body {
+    font-size: calc(var(--baseFontSize) * 0.6);
+  }
+}
+
 @media (max-width: 480px) {
   html, body {
-    font-size: calc(var(--baseFontSize) * 0.5);
-  }
-
-  #screen {
-    font-size: var(--baseFontSize);
+    font-size: calc(var(--baseFontSize) * 0.45);
   }
 }
 /* #endregion */

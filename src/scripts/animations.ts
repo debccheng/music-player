@@ -10,6 +10,14 @@ const getElementsForAnimation = (): [HTMLElement, HTMLElement, HTMLElement] | []
   return [screen, shadow, svgContainer];
 };
 
+export const showPlaylist = () => { 
+  const playlist = document.querySelectorAll<HTMLUListElement>(".playlist")?.[0];
+
+  if (playlist) { 
+    playlist.style.animation = "1s load-playlist forwards";
+  }
+};
+
 export const playCSSAnimation = (trackCover: string) => {
   const elements = getElementsForAnimation();
 
