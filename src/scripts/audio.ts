@@ -1,7 +1,7 @@
 import { fetchTracks } from "./api";
 import { playCSSAnimation, changeCSSAnimation, resetCSSAnimation, visualise } from "./animations";
 import { AudioData, TrackData } from "./types";
-import { populatePlaylist } from "./utils";
+import { createSlider, linkSliderWithAudio, populatePlaylist } from "./utils";
 
 export class AudioPlayer {
   private static playlist: TrackData[];
@@ -60,7 +60,15 @@ export class AudioPlayer {
 
       const audioElement = new Audio(audio.src);
       this.audioQueue.push({ id: audio.id, audioElement });
+
+      audioElement.onloadedmetadata = () => { 
+        const duration = Math.floor(audioElement.duration);
+        createSlider(duration, audioElement);
+      };
+
       audioElement.play();
+      linkSliderWithAudio(audioElement);
+
       audioElement.onended = () => { 
         resetCSSAnimation();
       };

@@ -4,6 +4,9 @@
 
   --screenImage: none;
   --screenGlow: none;
+
+  --progress: 0%;
+  --sliderPosition: 0%;
 }
 
 html, body {
@@ -60,7 +63,6 @@ h2 {
   padding: 1em;
   font-size: 1.25em;
   margin: 0.5em;
-  cursor: pointer;
 }
 
 .playlist li:first-child {
@@ -71,8 +73,11 @@ h2 {
   background-color: rgba(17, 17, 17, 0.4);
 }
 
-.playlist div {
+.playlist li > div {
   height: 75%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .album-cover {
@@ -89,6 +94,10 @@ h2 {
 .playlist li:hover .album-cover{
   filter: grayscale(0.1);
   transition: 0.5s ease-in;
+}
+
+#slider {
+  margin-top: 1.5em;
 }
 
 .svg-container {
@@ -168,7 +177,7 @@ svg {
 /* #region: Animations */
 @keyframes glow {
   25%, 33%, 49%, 51%, 66%, 75%{
-    box-shadow: 0 0 5.5em 1.5em rgba(220, 2551, 255, 1);
+    box-shadow: 0 0 5.5em 1.5em rgba(220, 255, 255, 1);
   }
   50% {
     box-shadow: 0 0 5.5em 1.5em rgba(255, 255, 255, 0.33);

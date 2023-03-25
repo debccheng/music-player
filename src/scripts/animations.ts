@@ -142,4 +142,3 @@ export const visualise = (context: AudioContext, src: MediaElementAudioSourceNod
     barWidth
   });
 };
-
