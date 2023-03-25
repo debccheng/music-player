@@ -24,16 +24,14 @@ html, body {
 .playlist{
   z-index: 1;
   position: absolute;
-  top: 0;
-  right: 17%;
+
+  top: 20%;
+  left: 55%;
   width: 0;
-  height: 45%;
+  height: 70%;
+  transform: perspective(500em) rotateX(58deg) rotateZ(30deg);
+  transform-origin: bottom left;
 
-  transform: perspective(50em) rotateY(-32deg);
-  perspective-origin: top right;
-  transform-origin: top right;
-
-  background-color: rgba(17, 17, 17, 0.4);
   border-radius: 1em;
   box-sizing: border-box;
   overflow-y: auto;
@@ -46,14 +44,14 @@ html, body {
   box-sizing: border-box;
   background-color: rgba(17, 17, 17, 0.2);
   border-radius: 0.5em;
-  padding: 1.5em;
+  padding: 3em;
   font-size: 1.5em;
   margin: 0.5em;
   cursor: pointer;
 }
 
 .playlist li:first-child {
-  background-color: rgba(17, 17, 17, 1);
+  background-color: rgba(17, 17, 17, 0.5);
 }
 
 .playlist li:not(:first-child):hover {
@@ -78,10 +76,10 @@ svg {
 
 #play-button {
   position: absolute;
-  top: 60%;
+  top: 59%;
   left: 33%;
   border-radius: 50%;
-  height: 13%;
+  height: 14%;
   width: 12%;
   transform: rotate3d(1, 0, 0.2, 65deg);
   font-size: 2em;
@@ -176,7 +174,7 @@ svg {
       width: 0;
   }
   100% {
-      width: 55%;
+      width: 80%;
   }
 }
 /* #endregion
