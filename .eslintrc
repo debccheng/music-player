@@ -12,6 +12,9 @@
   "rules": {
     "semi": [2, "always"],
     "eol-last": [2, "always"],
-    "quotes": [2, "double", { "avoidEscape": true }]
+    "no-console": ["warn", { "allow": ["warn"] }],
+    "quotes": [2, "double", { "avoidEscape": true }],
+    "max-len": ["warn", { "code": 120 }],
+    "@typescript-eslint/no-inferrable-types": "off"
   }
 }
