@@ -1,6 +1,14 @@
 {
   "tracks": [
     {
+      "id": "010321",
+      "title": "Ev'rybody Wants To Be A Cat",
+      "artist": "DCappella",
+      "duration": 152,
+      "cover": "src/assets/images/06.jpg",
+      "src": "src/assets/audio/evrybody-wants-to-be-a-cat.mp3"
+    },
+    {
       "id": "000000",
       "title": "Numb - Snippet",
       "artist": "Linkin Park",

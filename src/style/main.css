@@ -22,6 +22,8 @@ h2, h3 {
   font-weight: normal;
   margin: 0;
   padding: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 h2 {
@@ -78,6 +80,8 @@ h2 {
   flex: 1;
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .album-cover {
@@ -132,11 +136,11 @@ svg {
 
 #screen {
   position: absolute;
-  top: 44%;
-  left: 38%;
-  width: 34%;
-  height: 15%;
-  transform: rotate(12.5deg) skew(-36deg, 4deg);
+  top: 37%;
+  left: 37%;
+  width: 36%;
+  height: 28%;
+  transform: perspective(500em) rotateX(58deg) rotateZ(30.5deg);
   border-radius: 1em;
   display: flex;
   justify-content: center;
