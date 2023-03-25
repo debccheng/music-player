@@ -1,6 +1,7 @@
 import { fetchTracks } from "./api";
 import { playCSSAnimation, changeCSSAnimation, resetCSSAnimation, visualise } from "./animations";
 import { AudioData, TrackData } from "./types";
+import { populatePlaylist } from "./utils";
 
 export class AudioPlayer {
   private static playlist: TrackData[];
@@ -12,6 +13,8 @@ export class AudioPlayer {
     const { tracks } = await fetchTracks();
     this.playlist = tracks;
     this.audioQueue = [];
+
+    populatePlaylist(this.playlist);
   };
 
   private static checkForPlayingAudio = (audioId: string) => {

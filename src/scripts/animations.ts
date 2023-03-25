@@ -1,4 +1,4 @@
-import { SCREEN_BOX_SHADOW, SCREEN_GLOW_ANIMATION, SCREEN_DIM_GLOW_ANIMATION } from "./constants";
+import { SCREEN_BOX_SHADOW, SCREEN_GLOW_ANIMATION, SCREEN_DIM_GLOW_ANIMATION, SCREEN_INITIAL, SHADOW_ANIMATION, LIGHT_ANIMATION } from "./constants";
 import type { VisualiserRenderProps } from "./types";
 
 const getElementsForAnimation = (): [HTMLElement, HTMLElement, HTMLElement] | [] => { 
@@ -29,10 +29,10 @@ export const playCSSAnimation = (trackCover: string) => {
     screen.style.animation = SCREEN_GLOW_ANIMATION;
 
     shadow.style.opacity = "0.5";
-    shadow.style.animation = "3s steps(2) infinite shadow-change";
+    shadow.style.animation = SHADOW_ANIMATION;
 
     svgContainer.style.filter = "brightness(100%)";
-    svgContainer.style.animation = "3s steps(2) infinite light-change";
+    svgContainer.style.animation = LIGHT_ANIMATION;
   }
 };
 
@@ -60,7 +60,7 @@ export const resetCSSAnimation = () => {
 
     screen.style.setProperty("--screenImage", "none");
     screen.style.setProperty("--screenGlow", "none");
-    screen.style.animation = "0.5s ease-in-out infinite fuzzy-screen";
+    screen.style.animation = SCREEN_INITIAL;
 
     shadow.style.opacity = "0.1";
     shadow.style.animation = "none";
