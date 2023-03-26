@@ -100,7 +100,9 @@ export class AudioPlayer {
       if (this.index + 1 < this.playlist.length) {
         SliderActions.removeSlider();
         ButtonActions.addPlaylistButton(this.index, this.changeTrack);
+        
         this.index += 1;
+        ButtonActions.removePlaylistButton(this.index);
           
         this.load(this.index);
         this.play();
