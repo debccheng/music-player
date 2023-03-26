@@ -1,94 +1,119 @@
 import { fetchTracks } from "./api";
-import { playCSSAnimation, changeCSSAnimation, resetCSSAnimation, visualise } from "./animations";
-import { AudioData, TrackData } from "./types";
-import { createSlider, linkSliderWithAudio, populatePlaylist } from "./utils";
+import {
+  playCSSAnimation,
+  changeCSSAnimation,
+  resetCSSAnimation,
+  visualise,
+  scrollAudioIntoView
+} from "./animations";
+import { displayPlaylist, ButtonActions, SliderActions } from "./utils";
+import type { TrackData } from "./types";
+
+export enum AudioState { 
+  playing,
+  paused,
+  stopped
+}
 
 export class AudioPlayer {
   private static playlist: TrackData[];
-  private static audioQueue: AudioData[];
+  private static currentAudio: HTMLAudioElement;
   private static audioContext: AudioContext;
   private static srcNode: MediaElementAudioSourceNode;
+  private static index: number;
+  private static audioState: AudioState;
 
   public static initialise = async () => {
     const { tracks } = await fetchTracks();
     this.playlist = tracks;
-    this.audioQueue = [];
+    this.index = 0;
+    this.audioState = AudioState.paused;
 
-    populatePlaylist(this.playlist);
+    displayPlaylist(tracks);
+    ButtonActions.createPlaylistPlayButtons(this.index, this.changeTrack);
+
+    this.load(this.index);
   };
 
-  private static checkForPlayingAudio = (audioId: string) => {
-    const matched = this.audioQueue.filter(
-      ({ id, audioElement }) => id === audioId
-        && audioElement.duration > 0
-        && !audioElement.paused
-    );
-    return matched?.[0] || null;
+  public static getAudioState = () => { 
+    return this.audioState;
   };
-  
-  private static checkForPausedAudio = (audioId: string) => {
-    const matched = this.audioQueue.filter(
-      ({ id, audioElement }) => id === audioId
-        && audioElement.duration > 0
-        && audioElement.paused
-    );
-    return matched?.[0] || null;
+
+  private static checkForPlayingAudio = () => {
+    return !this.currentAudio.paused && this.currentAudio.duration > 0;
   };
 
   private static cleanup = () => {
     if (this.srcNode) this.srcNode.disconnect();
     if (this.audioContext) this.audioContext.close();
-
-    this.audioQueue = this.audioQueue.filter(({ audioElement }) => {
-      return audioElement.duration > 0 && !audioElement.paused;
-    });
   };
 
-  public static play = (audioId?: string) => {
-    const matchedAudio = this.playlist.find((audio) => {
-      if (audioId) return audio.id === audioId;
-    });
+  private static load = (index: number) => { 
+    const track = this.playlist?.[index];
+    this.currentAudio = new Audio(track.src);
 
-    const audio = matchedAudio || this.playlist?.[0];
-    if (!audio) return;
+    this.currentAudio.onloadedmetadata = () => {
+      const duration = Math.floor(this.currentAudio.duration);
+      SliderActions.createSlider({duration, audio: this.currentAudio, index});
+      SliderActions.linkSliderWithAudio(this.currentAudio);
+    };
+  };
 
-    const playingAudio = this.checkForPlayingAudio(audio.id);
-    const pausedAudio = this.checkForPausedAudio(audio.id);
-
-    if (!pausedAudio && !playingAudio) {
+  public static stop = () => {
+    const playingAudio = this.checkForPlayingAudio();
+    if (playingAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+      this.audioState = AudioState.stopped;
       this.cleanup();
+    }
+  };
 
-      const audioElement = new Audio(audio.src);
-      this.audioQueue.push({ id: audio.id, audioElement });
+  public static pause = () => {
+    const playingAudio = this.checkForPlayingAudio();
+    if (playingAudio) {
+      this.currentAudio.pause();
+      this.audioState = AudioState.paused;
+      changeCSSAnimation();
+    }
+  };
 
-      audioElement.onloadedmetadata = () => { 
-        const duration = Math.floor(audioElement.duration);
-        createSlider(duration, audioElement);
-      };
+  public static changeTrack = (index: number) => {
+    this.stop();
+    SliderActions.removeSlider();
+    ButtonActions.addPlaylistButton(this.index, this.changeTrack);
 
-      audioElement.play();
-      linkSliderWithAudio(audioElement);
+    this.index = index;
+    ButtonActions.removePlaylistButton(this.index);
+    this.load(this.index);
+    this.play();
+  };
 
-      audioElement.onended = () => { 
+
+  public static play = () => {
+    this.currentAudio.play();
+
+    scrollAudioIntoView(this.index);
+    this.audioState = AudioState.playing;
+
+    this.currentAudio.onended = () => {
+      if (this.index + 1 < this.playlist.length) {
+        SliderActions.removeSlider();
+        ButtonActions.addPlaylistButton(this.index, this.changeTrack);
+        this.index += 1;
+          
+        this.load(this.index);
+        this.play();
+      } else {
         resetCSSAnimation();
-      };
+      }
+    };
 
-      this.audioContext = new AudioContext();
-      this.srcNode = this.audioContext.createMediaElementSource(audioElement);
+    this.audioContext = new AudioContext();
+    this.srcNode = this.audioContext.createMediaElementSource(this.currentAudio);
 
-      visualise(this.audioContext, this.srcNode);
-      playCSSAnimation(audio.cover);
-      return;
-    }
-
-    if (pausedAudio) {
-      pausedAudio.audioElement.play();
-      playCSSAnimation(audio.cover);
-      return;
-    }
-
-    playingAudio.audioElement.pause();
-    changeCSSAnimation();
+    visualise(this.audioContext, this.srcNode);
+    playCSSAnimation(this.playlist[this.index]?.cover || "");
     return;
   };
 }

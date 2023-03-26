@@ -20,10 +20,7 @@ export type RawData = {
   tracks: TrackData[];
 }
 
-export type AudioData = {
-  id: string;
-  audioElement: HTMLAudioElement;
-}
+export type AudioWithImage = HTMLAudioElement & { img?: string }
 
 export type VisualiserRenderProps = {
   analyser: AnalyserNode;

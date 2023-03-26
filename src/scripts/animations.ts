@@ -1,4 +1,6 @@
-import { SCREEN_BOX_SHADOW, SCREEN_GLOW_ANIMATION, SCREEN_DIM_GLOW_ANIMATION, SCREEN_INITIAL, SHADOW_ANIMATION, LIGHT_ANIMATION } from "./constants";
+import {
+  SCREEN_BOX_SHADOW, SCREEN_GLOW_ANIMATION, SCREEN_DIM_GLOW_ANIMATION, SCREEN_INITIAL, SHADOW_ANIMATION, LIGHT_ANIMATION
+} from "./constants";
 import type { VisualiserRenderProps } from "./types";
 
 const getElementsForAnimation = (): [HTMLElement, HTMLElement, HTMLElement] | [] => { 
@@ -11,10 +13,19 @@ const getElementsForAnimation = (): [HTMLElement, HTMLElement, HTMLElement] | []
 };
 
 export const showPlaylist = () => { 
-  const playlist = document.querySelectorAll<HTMLUListElement>(".playlist")?.[0];
+  const playlist = document.querySelector<HTMLUListElement>(".playlist");
 
   if (playlist) { 
     playlist.style.animation = "1s load-playlist forwards";
+  }
+};
+
+export const scrollAudioIntoView = (index: number) => { 
+  const items = document.querySelectorAll<HTMLUListElement>("li");
+  if (items && items.length > index + 1) {
+    setTimeout(() => {
+      items[index].scrollIntoView({ behavior: "smooth" });
+    }, 200);
   }
 };
 
