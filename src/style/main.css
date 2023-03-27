@@ -67,12 +67,8 @@ h2 {
   margin: 0.5em;
 }
 
-.playlist li:first-child {
+.playlist li:hover {
   background-color: rgba(17, 17, 17, 0.5);
-}
-
-.playlist li:not(:first-child):hover {
-  background-color: rgba(17, 17, 17, 0.4);
 }
 
 .playlist li > div {

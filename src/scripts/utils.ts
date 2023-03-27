@@ -54,7 +54,8 @@ const createSlider = ({ duration, index, audio }: CreateSlider) => {
   const playlistElement = document.querySelector(".playlist") as HTMLUListElement;
   const lists = playlistElement.querySelectorAll("li");
 
-  if (!!lists && lists.length > index) { 
+  if (!!lists && lists.length > index) {
+    lists[index].style.cssText = "background-color: rgba(17, 17, 17, 0.5)";
     const item = lists[index].querySelector("div");
     const slider = document.createElement("input");
   
@@ -111,11 +112,12 @@ const createPlaylistPlayButtons = (indexToExclude: number, callback: (i: number)
   });
 };
 
-const addPlaylistButton = (index: number, callback: (i: number) => void) => { 
+const addPlaylistButton = (index: number, callback: (i: number) => void) => {
   const playlistElement = document.querySelector(".playlist") as HTMLUListElement;
   const lists = playlistElement.querySelectorAll("li");
 
   if (!lists || lists.length <= index) return;
+  lists[index].style.cssText = "background-color: rgba(17, 17, 17, 0.2)";
   const item = lists[index].querySelector("div");
   const button = document.createElement("button");
 
