@@ -22,6 +22,7 @@ export class AudioPlayer {
   private static srcNode: MediaElementAudioSourceNode;
   private static index: number;
   private static audioState: AudioState;
+  private static volume: number;
 
   public static initialise = async () => {
     const { tracks } = await fetchTracks();
@@ -51,6 +52,7 @@ export class AudioPlayer {
   private static load = (index: number) => { 
     const track = this.playlist?.[index];
     this.currentAudio = new Audio(track.src);
+    this.currentAudio.volume = this.volume || 0.5;
 
     this.currentAudio.onloadedmetadata = () => {
       const duration = Math.floor(this.currentAudio.duration);
@@ -89,7 +91,6 @@ export class AudioPlayer {
     this.play();
   };
 
-
   public static play = () => {
     this.currentAudio.play();
 
@@ -117,5 +118,19 @@ export class AudioPlayer {
     visualise(this.audioContext, this.srcNode);
     playCSSAnimation(this.playlist[this.index]?.cover || "");
     return;
+  };
+
+  public static increaseVolume = () => { 
+    if (this.currentAudio.volume < 1) {
+      this.currentAudio.volume = +(this.currentAudio.volume + 0.1).toFixed(1);
+      this.volume = this.currentAudio.volume;
+    }
+  };
+
+  public static decreaseVolume = () => { 
+    if (this.currentAudio.volume > 0) {
+      this.currentAudio.volume = +(this.currentAudio.volume - 0.1).toFixed(1);
+      this.volume = this.currentAudio.volume;
+    }
   };
 }

@@ -14,3 +14,14 @@ playButton?.addEventListener("click", () => {
     AudioPlayer.pause();
   }
 });
+
+const increaseVolumeButton = document.getElementById("increase-volume");
+const decreaseVolumeButton = document.getElementById("decrease-volume");
+
+increaseVolumeButton?.addEventListener("click", () => {
+  AudioPlayer.increaseVolume();
+});
+
+decreaseVolumeButton?.addEventListener("click", () => { 
+  AudioPlayer.decreaseVolume();
+});
