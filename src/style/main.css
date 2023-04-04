@@ -146,6 +146,32 @@ svg {
   cursor: pointer;
 }
 
+.volume-button {
+  position: absolute;
+  transform: perspective(500em) rotateY(75deg) rotateZ(76deg);
+  transform-origin: bottom left;
+  height: 12%;
+  width: 2.5%;
+  background-color: #f4f0e5;
+  cursor: pointer;
+}
+
+#increase-volume {
+  top: 47%;
+  right: 20%;
+  border-top-right-radius: 1em;
+  border-top-left-radius: 1em;
+  border-bottom: none;
+}
+
+#decrease-volume {
+  top: 50%;
+  right: 23%;
+  border-bottom-right-radius: 1em;
+  border-bottom-left-radius: 1em;
+  border-top: none;
+}
+
 #screen {
   position: absolute;
   top: 37%;
